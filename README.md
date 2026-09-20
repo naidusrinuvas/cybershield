@@ -39,38 +39,32 @@ CyberShield/
 ├── static/
 ├── utils/
 └── README.md
-
 ## Screenshots
 
 ### Home Page
-![CyberShield Home](screenshots/home.png)
+![Home Page](./screenshots/home.png)
 
 ### Dashboard
-![CyberShield Dashboard](screenshots/dash%20board.png)
+![Dashboard](./screenshots/dash%20board.png)
 
 ### Tools
-![CyberShield Tools](screenshots/tools.png)
+![Tools](./screenshots/tools.png)
 
 ### Port Scanner
-![Port Scanner](screenshots/port%20scanner.png)
+![Port Scanner](./screenshots/port%20scanner.png)
 
 ### Website Security Checker
-![Website Security Checker](screenshots/website%20security%20checker.png)
+![Website Security Checker](./screenshots/website%20security%20checker.png)
 
 ### SSL Certificate Checker
-![SSL Certificate Checker](screenshots/SSL-certificate%20checker.png)
+![SSL Certificate Checker](./screenshots/SSL-certificate%20checker.png)
 
 ### Scan History
-![Scan History](screenshots/scan-history.png)
+![Scan History](./screenshots/%20scan-history.png)
 
 ### Reports
-![Security Reports](screenshots/reports.png)
+![Reports](./screenshots/reports.png)
 
 ### Login Page
-![Login Page](screenshots/login%20page.png)
-
-### Reports
-![Security Reports](screenshots/reports.png)
-
-### Login Page
+![Login Page](./screenshots/login%20page.png)
 ![Login Page](screenshots/login%20page.png)
