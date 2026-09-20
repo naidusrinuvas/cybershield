@@ -68,3 +68,9 @@ CyberShield/
 
 ### Login Page
 ![Login Page](screenshots/login%20page.png)
+
+### Reports
+![Security Reports](screenshots/reports.png)
+
+### Login Page
+![Login Page](screenshots/login%20page.png)
