@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}CyberShield - XSS Scanner{% endblock %}
+{% block content %}
+<h1 class="fw-bold mb-4"><i class="bi bi-code-slash text-primary"></i> XSS Scanner</h1>
+
+<div class="alert alert-warning">
+    <i class="bi bi-exclamation-triangle-fill"></i>
+    Only scan applications you own or have explicit permission to test &mdash; e.g. a locally running
+    <strong>DVWA</strong> or <strong>OWASP Juice Shop</strong> instance. Never scan live external websites.
+</div>
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body p-4">
+        <form method="POST" class="row g-3 scan-form">
+            <div class="col-md-10">
+                <input type="text" class="form-control" name="url" value="{{ url_input }}"
+                       placeholder="http://localhost/dvwa/vulnerabilities/xss_r/?name=test" required>
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary w-100 scan-submit-btn"><span class="btn-label">Scan</span></button>
+            </div>
+        </form>
+        <div class="scan-progress-bar" id="scanProgress"><div class="bar"></div></div>
+        <small class="text-muted">Injects a unique script marker into GET parameters and form fields, and checks if it's reflected unescaped in the response.</small>
+
+        {% if result %}
+        <hr>
+        {% if result.errors %}
+        <div class="alert alert-danger">{{ result.errors[0].detail }}</div>
+        {% endif %}
+
+        <div class="alert {% if result.risk_level == 'High' %}alert-danger{% else %}alert-success{% endif %}">
+            Risk level: <strong>{{ result.risk_level }}</strong> &mdash; {{ result.findings | length }} potential finding(s)
+        </div>
+
+        {% if result.findings %}
+        <div class="table-responsive">
+            <table class="table table-hover bg-white">
+                <thead><tr><th>Type</th><th>Parameter</th><th>Payload</th></tr></thead>
+                <tbody>
+                {% for f in result.findings %}
+                    <tr>
+                        <td>{{ f.type }}</td>
+                        <td>{{ f.parameter }}</td>
+                        <td><code>{{ f.payload }}</code></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="alert alert-info">
+            <strong>Recommendation:</strong> Escape/encode all user input before rendering it in HTML,
+            and use a templating engine's auto-escaping (e.g. Jinja2's default escaping) rather than
+            building HTML strings manually.
+        </div>
+        {% endif %}
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

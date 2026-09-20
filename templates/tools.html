@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}CyberShield - Tools{% endblock %}
+{% block content %}
+<h1 class="fw-bold mb-3">Tools</h1>
+
+<div class="mb-4">
+    <div class="input-group" style="max-width: 400px;">
+        <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+        <input type="text" class="form-control" id="toolSearch" placeholder="Search tools...">
+    </div>
+</div>
+
+{% set tools = [
+    ("bi-key-fill", "Password Strength Checker", "password_checker_page", True),
+    ("bi-shuffle", "Password Generator", "password_generator_page", True),
+    ("bi-file-earmark-lock2-fill", "AES File Encryption", "aes_encryption_page", True),
+    ("bi-file-earmark-binary-fill", "RSA Key Generator", "rsa_generator_page", True),
+    ("bi-hdd-network-fill", "Port Scanner", "port_scanner_page", True),
+    ("bi-broadcast", "Packet Sniffer", "packet_sniffer_page", True),
+    ("bi-globe2", "Website Security Checker", "website_checker_page", True),
+    ("bi-patch-check-fill", "SSL Certificate Checker", "ssl_checker_page", True),
+    ("bi-diagram-3-fill", "Subdomain Scanner", "subdomain_scanner_page", True),
+    ("bi-folder2-open", "Directory Scanner", "directory_scanner_page", True),
+    ("bi-bug-fill", "SQL Injection Detector", "sql_injection_detector_page", True),
+    ("bi-code-slash", "XSS Scanner", "xss_scanner_page", True),
+] %}
+
+<div class="row g-4" id="toolGrid">
+    {% for icon, name, endpoint, ready in tools %}
+    <div class="col-md-4 col-sm-6">
+        {% if ready %}
+        <a href="{{ url_for(endpoint) }}" class="text-decoration-none text-reset">
+        {% endif %}
+        <div class="card h-100 shadow-sm border-0 tool-card" data-tool-name="{{ name }}">
+            <div class="card-body text-center">
+                <i class="bi {{ icon }} fs-2 text-primary"></i>
+                <h6 class="card-title mt-3">{{ name }}</h6>
+                {% if ready %}
+                <span class="badge bg-success">Available</span>
+                {% else %}
+                <span class="badge bg-secondary">Coming soon</span>
+                {% endif %}
+            </div>
+        </div>
+        {% if ready %}
+        </a>
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

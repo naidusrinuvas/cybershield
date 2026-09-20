@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}CyberShield - Scan History{% endblock %}
+{% block content %}
+<h1 class="fw-bold mb-4"><i class="bi bi-clock-history text-primary"></i> Scan History</h1>
+
+{% if scans %}
+<div class="table-responsive">
+    <table class="table table-hover align-middle bg-white shadow-sm rounded">
+        <thead>
+            <tr>
+                <th>Scan Type</th>
+                <th>Target</th>
+                <th>Result</th>
+                <th>Risk Level</th>
+                <th>Date</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for scan in scans %}
+            <tr>
+                <td>{{ scan.scan_type }}</td>
+                <td>{{ scan.target }}</td>
+                <td>{{ scan.result }}</td>
+                <td>
+                    {% if scan.risk_level == 'High' %}
+                        <span class="badge bg-danger">High</span>
+                    {% elif scan.risk_level == 'Medium' %}
+                        <span class="badge bg-warning text-dark">Medium</span>
+                    {% else %}
+                        <span class="badge bg-success">Low</span>
+                    {% endif %}
+                </td>
+                <td>{{ scan.date }}</td>
+                <td class="text-nowrap">
+                    <a href="{{ url_for('analyze_scan', scan_id=scan.scan_id) }}" class="btn btn-sm btn-outline-primary" title="AI Analysis">
+                        <i class="bi bi-robot"></i>
+                    </a>
+                    <form method="POST" action="{{ url_for('generate_report_for_scan', scan_id=scan.scan_id) }}" class="d-inline">
+                        <button class="btn btn-sm btn-outline-success" type="submit" title="Generate PDF Report">
+                            <i class="bi bi-file-earmark-pdf"></i>
+                        </button>
+                    </form>
+                    <form method="POST" action="{{ url_for('delete_history', scan_id=scan.scan_id) }}" class="d-inline">
+                        <button class="btn btn-sm btn-outline-danger" type="submit" title="Delete">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="alert alert-secondary">No scans yet. Run a tool from the Tools page to see history here.</div>
+{% endif %}
+{% endblock %}

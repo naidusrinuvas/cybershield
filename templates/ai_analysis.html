@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}CyberShield - AI Analysis{% endblock %}
+{% block content %}
+<h1 class="fw-bold mb-4"><i class="bi bi-robot text-primary"></i> AI Security Analysis</h1>
+
+<div class="card border-0 shadow-sm mb-4">
+    <div class="card-body p-4">
+        <p class="mb-1"><strong>Scan Type:</strong> {{ scan.scan_type }}</p>
+        <p class="mb-1"><strong>Target:</strong> {{ scan.target }}</p>
+        <p class="mb-1"><strong>Result:</strong> {{ scan.result }}</p>
+        <p class="mb-0"><strong>Risk Level:</strong>
+            {% if scan.risk_level == 'High' %}<span class="badge bg-danger">High</span>
+            {% elif scan.risk_level == 'Medium' %}<span class="badge bg-warning text-dark">Medium</span>
+            {% else %}<span class="badge bg-success">{{ scan.risk_level }}</span>{% endif %}
+        </p>
+    </div>
+</div>
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body p-4">
+        <h5 class="fw-bold">Summary</h5>
+        <p>{{ analysis.summary }}</p>
+
+        <h5 class="fw-bold mt-4">Risk Explanation</h5>
+        <p>{{ analysis.risk_explanation }}</p>
+
+        <h5 class="fw-bold mt-4">Recommendations</h5>
+        <ul>
+            {% for rec in analysis.recommendations %}
+            <li>{{ rec }}</li>
+            {% endfor %}
+        </ul>
+
+        <hr>
+        <small class="text-muted">
+            {% if analysis.source == 'ai' %}
+                <i class="bi bi-stars"></i> Generated using AI analysis.
+            {% else %}
+                <i class="bi bi-gear"></i> Generated using the rule-based analysis engine (no AI API key configured).
+            {% endif %}
+        </small>
+    </div>
+</div>
+
+<form method="POST" action="{{ url_for('generate_report_for_scan', scan_id=scan.scan_id) }}" class="mt-3">
+    <button type="submit" class="btn btn-primary">
+        <i class="bi bi-file-earmark-pdf"></i> Generate PDF Report from this Analysis
+    </button>
+</form>
+{% endblock %}

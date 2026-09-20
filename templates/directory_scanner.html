@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}CyberShield - Directory Scanner{% endblock %}
+{% block content %}
+<h1 class="fw-bold mb-4"><i class="bi bi-folder2-open text-primary"></i> Directory Scanner</h1>
+
+<div class="alert alert-warning">
+    <i class="bi bi-exclamation-triangle-fill"></i> Only scan websites you own or have explicit permission to test.
+</div>
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body p-4">
+        <form method="POST" class="row g-3 scan-form">
+            <div class="col-md-10">
+                <input type="text" class="form-control" name="url" value="{{ url_input }}"
+                       placeholder="example.com or https://example.com" required>
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary w-100 scan-submit-btn"><span class="btn-label">Scan</span></button>
+            </div>
+        </form>
+        <div class="scan-progress-bar" id="scanProgress"><div class="bar"></div></div>
+        <small class="text-muted">Checks: admin, login, backup, uploads, images, assets, config.</small>
+
+        {% if results %}
+        <hr>
+        <div class="table-responsive">
+            <table class="table table-hover bg-white">
+                <thead><tr><th>Path</th><th>Status Code</th><th>Accessible</th></tr></thead>
+                <tbody>
+                {% for r in results %}
+                    <tr>
+                        <td>/{{ r.path }}/</td>
+                        <td>{{ r.status_code or "No response" }}</td>
+                        <td>
+                            {% if r.accessible %}
+                                <span class="badge bg-danger">Yes</span>
+                            {% else %}
+                                <span class="badge bg-success">No</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

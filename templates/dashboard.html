@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% block title %}CyberShield - Dashboard{% endblock %}
+{% block content %}
+<h1 class="fw-bold mb-4">Dashboard</h1>
+
+<div class="row g-3">
+    <div class="col-6 col-md-4 col-lg-2">
+        <div class="card text-center shadow-sm border-0 stat-card">
+            <div class="card-body">
+                <h3 class="fw-bold stat-number" data-value="{{ stats.total_scans }}">0</h3>
+                <small class="text-muted">Total Scans</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-6 col-md-4 col-lg-2">
+        <div class="card text-center shadow-sm border-0 stat-card">
+            <div class="card-body">
+                <h3 class="fw-bold stat-number" data-value="{{ stats.reports_generated }}">0</h3>
+                <small class="text-muted">Reports Generated</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-6 col-md-4 col-lg-2">
+        <div class="card text-center shadow-sm border-0 stat-card">
+            <div class="card-body">
+                <h3 class="fw-bold text-danger stat-number" data-value="{{ stats.high_risk }}">0</h3>
+                <small class="text-muted">High Risk</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-6 col-md-4 col-lg-2">
+        <div class="card text-center shadow-sm border-0 stat-card">
+            <div class="card-body">
+                <h3 class="fw-bold text-warning stat-number" data-value="{{ stats.medium_risk }}">0</h3>
+                <small class="text-muted">Medium Risk</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-6 col-md-4 col-lg-2">
+        <div class="card text-center shadow-sm border-0 stat-card">
+            <div class="card-body">
+                <h3 class="fw-bold text-success stat-number" data-value="{{ stats.low_risk }}">0</h3>
+                <small class="text-muted">Low Risk</small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h5 class="fw-bold mt-5 mb-3">Quick Access</h5>
+<div class="row g-3">
+    <div class="col-md-3 col-6">
+        <a href="{{ url_for('password_checker_page') }}" class="text-decoration-none">
+            <div class="card text-center shadow-sm border-0 p-3 tool-card">
+                <i class="bi bi-key-fill fs-3 text-primary"></i>
+                <small class="mt-2">Password Security</small>
+            </div>
+        </a>
+    </div>
+    <div class="col-md-3 col-6">
+        <a href="{{ url_for('rsa_generator_page') }}" class="text-decoration-none">
+            <div class="card text-center shadow-sm border-0 p-3 tool-card">
+                <i class="bi bi-file-earmark-binary-fill fs-3 text-primary"></i>
+                <small class="mt-2">Cryptography</small>
+            </div>
+        </a>
+    </div>
+    <div class="col-md-3 col-6">
+        <a href="{{ url_for('port_scanner_page') }}" class="text-decoration-none">
+            <div class="card text-center shadow-sm border-0 p-3 tool-card">
+                <i class="bi bi-hdd-network-fill fs-3 text-primary"></i>
+                <small class="mt-2">Network Security</small>
+            </div>
+        </a>
+    </div>
+    <div class="col-md-3 col-6">
+        <a href="{{ url_for('reports') }}" class="text-decoration-none">
+            <div class="card text-center shadow-sm border-0 p-3 tool-card">
+                <i class="bi bi-file-earmark-pdf-fill fs-3 text-primary"></i>
+                <small class="mt-2">Reports</small>
+            </div>
+        </a>
+    </div>
+</div>
+
+<h5 class="fw-bold mt-5 mb-3">Recent Activity</h5>
+{% if recent %}
+<div class="table-responsive">
+    <table class="table table-hover bg-white shadow-sm rounded">
+        <thead><tr><th>Scan Type</th><th>Result</th><th>Risk</th><th>Date</th></tr></thead>
+        <tbody>
+        {% for scan in recent %}
+            <tr>
+                <td>{{ scan.scan_type }}</td>
+                <td>{{ scan.result }}</td>
+                <td>{{ scan.risk_level }}</td>
+                <td>{{ scan.date }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="alert alert-info">No scans yet &mdash; try the Password Strength Checker or RSA Key Generator to get started.</div>
+{% endif %}
+{% endblock %}

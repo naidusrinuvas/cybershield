@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block title %}CyberShield - Port Scanner{% endblock %}
+{% block content %}
+<h1 class="fw-bold mb-4"><i class="bi bi-hdd-network-fill text-primary"></i> Port Scanner</h1>
+
+<div class="alert alert-warning">
+    <i class="bi bi-exclamation-triangle-fill"></i>
+    Only scan hosts/IPs you own or have explicit permission to test (e.g. <code>127.0.0.1</code> or your own LAN device).
+</div>
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body p-4">
+        <form method="POST" class="scan-form">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label">Target IP or Hostname</label>
+                    <input type="text" class="form-control" name="target" value="{{ target }}"
+                           placeholder="e.g. 127.0.0.1" required>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Port Range</label>
+                    <input type="text" class="form-control" name="port_range" value="{{ port_range }}"
+                           placeholder="e.g. 1-1024 or 22,80,443">
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary w-100 scan-submit-btn"><span class="btn-label">Scan</span></button>
+                </div>
+            </div>
+        </form>
+        <div class="scan-progress-bar" id="scanProgress"><div class="bar"></div></div>
+
+        {% if scan_result and scan_result.results %}
+        <hr>
+        <p class="text-muted mb-2">Engine used: <strong>{{ scan_result.engine }}</strong> &mdash; Target: <strong>{{ scan_result.target }}</strong></p>
+
+        {% set open_ports = scan_result.results | selectattr('status', 'equalto', 'open') | list %}
+        <div class="alert {% if open_ports %}alert-warning{% else %}alert-success{% endif %}">
+            {{ open_ports | length }} open port(s) found out of {{ scan_result.results | length }} scanned.
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover bg-white">
+                <thead><tr><th>Port</th><th>Status</th><th>Service</th></tr></thead>
+                <tbody>
+                {% for r in scan_result.results %}
+                    <tr>
+                        <td>{{ r.port }}</td>
+                        <td>
+                            {% if r.status == 'open' %}
+                                <span class="badge bg-danger">Open</span>
+                            {% elif r.status == 'filtered' %}
+                                <span class="badge bg-warning text-dark">Filtered</span>
+                            {% else %}
+                                <span class="badge bg-success">Closed</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ r.service }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

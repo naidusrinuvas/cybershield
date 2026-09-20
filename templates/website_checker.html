@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}CyberShield - Website Security Checker{% endblock %}
+{% block content %}
+<h1 class="fw-bold mb-4"><i class="bi bi-globe2 text-primary"></i> Website Security Checker</h1>
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body p-4">
+        <form method="POST" class="row g-3 scan-form">
+            <div class="col-md-10">
+                <input type="text" class="form-control" name="url" value="{{ url_input }}"
+                       placeholder="example.com or https://example.com" required>
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary w-100 scan-submit-btn"><span class="btn-label">Check</span></button>
+            </div>
+        </form>
+        <div class="scan-progress-bar" id="scanProgress"><div class="bar"></div></div>
+
+        {% if result %}
+        <hr>
+        {% if result.error %}
+        <div class="alert alert-danger">Could not reach site: {{ result.error }}</div>
+        {% else %}
+        <div class="row g-3">
+            <div class="col-md-6">
+                <p class="mb-1"><strong>Status Code:</strong> {{ result.status_code }}</p>
+                <p class="mb-1"><strong>HTTPS:</strong>
+                    {% if result.https %}<span class="badge bg-success">Yes</span>{% else %}<span class="badge bg-danger">No</span>{% endif %}
+                </p>
+                <p class="mb-1"><strong>Server:</strong> {{ result.server }}</p>
+                <p class="mb-1"><strong>robots.txt:</strong> {{ "Found" if result.robots_txt else "Not found" }}</p>
+                <p class="mb-1"><strong>sitemap.xml:</strong> {{ "Found" if result.sitemap_xml else "Not found" }}</p>
+            </div>
+            <div class="col-md-6">
+                <h6>Security Headers Present</h6>
+                {% if result.headers_present %}
+                <ul class="list-unstyled">
+                    {% for label, value in result.headers_present.items() %}
+                    <li><i class="bi bi-check-circle-fill text-success"></i> {{ label }}</li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <p class="text-muted">None found</p>
+                {% endif %}
+
+                <h6 class="mt-3">Missing Headers</h6>
+                {% if result.headers_missing %}
+                <ul class="list-unstyled">
+                    {% for label in result.headers_missing %}
+                    <li><i class="bi bi-x-circle-fill text-danger"></i> {{ label }}</li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <p class="text-success">All checked headers present!</p>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

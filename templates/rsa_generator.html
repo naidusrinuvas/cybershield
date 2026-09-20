@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}CyberShield - RSA Key Generator{% endblock %}
+{% block content %}
+<h1 class="fw-bold mb-4"><i class="bi bi-file-earmark-binary-fill text-primary"></i> RSA Key Generator</h1>
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body p-4">
+        <form method="POST">
+            <div class="mb-3">
+                <label class="form-label">Key size</label>
+                <select class="form-select" name="key_size" style="max-width: 200px;">
+                    <option value="2048" selected>2048 bit</option>
+                    <option value="3072">3072 bit</option>
+                    <option value="4096">4096 bit (slower)</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Generate Key Pair</button>
+        </form>
+
+        {% if keys %}
+        <hr>
+        <div class="mb-3">
+            <label class="form-label">Public Key</label>
+            <textarea class="form-control font-monospace" rows="6" readonly>{{ keys.public_key }}</textarea>
+            <form method="POST" action="{{ url_for('download_rsa_key', key_type='public') }}" class="mt-2">
+                <input type="hidden" name="key_content" value="{{ keys.public_key }}">
+                <button class="btn btn-sm btn-outline-secondary" type="submit">
+                    <i class="bi bi-download"></i> Download public_key.pem
+                </button>
+            </form>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Private Key <span class="text-danger">(keep secret!)</span></label>
+            <textarea class="form-control font-monospace" rows="10" readonly>{{ keys.private_key }}</textarea>
+            <form method="POST" action="{{ url_for('download_rsa_key', key_type='private') }}" class="mt-2">
+                <input type="hidden" name="key_content" value="{{ keys.private_key }}">
+                <button class="btn btn-sm btn-outline-danger" type="submit">
+                    <i class="bi bi-download"></i> Download private_key.pem
+                </button>
+            </form>
+        </div>
+        <div class="alert alert-warning">
+            <i class="bi bi-exclamation-triangle-fill"></i> This private key was generated in your browser session
+            and is not stored on the server. Save it now &mdash; it won't be shown again.
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,307 @@
+:root {
+    --cs-primary: #0d6efd;
+    --cs-dark: #10141c;
+
+    /* Light theme (default) */
+    --cs-bg: #f7f9fc;
+    --cs-card-bg: #ffffff;
+    --cs-text: #1a1d23;
+    --cs-text-muted: #6c757d;
+    --cs-border: #e5e7eb;
+    --cs-table-stripe: #f7f9fc;
+}
+
+[data-theme="dark"] {
+    --cs-bg: #0f1218;
+    --cs-card-bg: #1a1f29;
+    --cs-text: #e8eaed;
+    --cs-text-muted: #9aa0a6;
+    --cs-border: #2b3140;
+    --cs-table-stripe: #171c26;
+}
+
+body {
+    background-color: var(--cs-bg);
+    color: var(--cs-text);
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+#mainNav {
+    background-color: var(--cs-dark);
+}
+
+.nav-link.active {
+    font-weight: 600;
+    color: #fff !important;
+    border-bottom: 2px solid var(--cs-primary);
+}
+
+.card {
+    border-radius: 0.75rem;
+    background-color: var(--cs-card-bg);
+    color: var(--cs-text);
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.2s ease;
+}
+
+.tool-card:hover,
+.stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+}
+
+footer {
+    background-color: var(--cs-card-bg);
+    color: var(--cs-text-muted);
+    border-top: 1px solid var(--cs-border) !important;
+}
+
+[data-theme="dark"] .table {
+    color: var(--cs-text);
+}
+
+[data-theme="dark"] .table-hover > tbody > tr:hover > * {
+    color: var(--cs-text);
+    background-color: var(--cs-table-stripe);
+}
+
+[data-theme="dark"] .bg-white {
+    background-color: var(--cs-card-bg) !important;
+}
+
+[data-theme="dark"] .form-control,
+[data-theme="dark"] .form-select {
+    background-color: var(--cs-card-bg);
+    color: var(--cs-text);
+    border-color: var(--cs-border);
+}
+
+[data-theme="dark"] .form-control:focus,
+[data-theme="dark"] .form-select:focus {
+    background-color: var(--cs-card-bg);
+    color: var(--cs-text);
+}
+
+[data-theme="dark"] .text-muted {
+    color: var(--cs-text-muted) !important;
+}
+
+/* Dark mode toggle button */
+#themeToggle {
+    cursor: pointer;
+    border: none;
+    background: transparent;
+    color: #fff;
+    font-size: 1.1rem;
+}
+
+/* Loading spinner overlay on scan buttons */
+.btn.is-loading {
+    pointer-events: none;
+    opacity: 0.85;
+}
+
+.btn.is-loading .btn-label {
+    visibility: hidden;
+}
+
+.btn.is-loading::after {
+    content: "";
+    position: absolute;
+    width: 1rem;
+    height: 1rem;
+    top: 50%;
+    left: 50%;
+    margin: -0.5rem 0 0 -0.5rem;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: btn-spin 0.6s linear infinite;
+}
+
+.btn.is-loading {
+    position: relative;
+}
+
+@keyframes btn-spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Indeterminate scan progress bar */
+#scanProgress {
+    display: none;
+    height: 4px;
+    overflow: hidden;
+    background-color: var(--cs-border);
+    border-radius: 2px;
+    margin-top: 0.75rem;
+}
+
+#scanProgress.active {
+    display: block;
+}
+
+#scanProgress .bar {
+    height: 100%;
+    width: 30%;
+    background-color: var(--cs-primary);
+    animation: scan-progress 1.1s ease-in-out infinite;
+}
+
+@keyframes scan-progress {
+    0% { margin-left: -30%; }
+    100% { margin-left: 100%; }
+}
+
+/* Responsive tweaks */
+@media (max-width: 576px) {
+    .stat-card h3 { font-size: 1.5rem; }
+    .table-responsive { font-size: 0.85rem; }
+}
+
+/* ===========================================================================
+   Animations
+   =========================================================================== */
+
+/* Page content fade + rise in on load */
+main.container {
+    animation: page-fade-in 0.35s ease-out;
+}
+
+@keyframes page-fade-in {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Staggered card entrance (applied via JS with --delay custom property) */
+.card {
+    animation: card-in 0.4s ease-out both;
+    animation-delay: var(--delay, 0s);
+}
+
+@keyframes card-in {
+    from { opacity: 0; transform: translateY(14px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Nicer hover: lift + slight scale + icon nudge */
+.tool-card,
+.stat-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.tool-card:hover,
+.stat-card:hover {
+    transform: translateY(-6px) scale(1.02);
+}
+
+.tool-card:hover i,
+.card:hover > .card-body > i {
+    transform: scale(1.15) rotate(-4deg);
+}
+
+.tool-card i,
+.stat-card i {
+    display: inline-block;
+    transition: transform 0.25s ease;
+}
+
+/* Animated underline on nav links */
+.navbar-nav .nav-link {
+    position: relative;
+}
+
+.navbar-nav .nav-link::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--cs-primary);
+    transition: width 0.2s ease, left 0.2s ease;
+}
+
+.navbar-nav .nav-link:hover::after {
+    width: 70%;
+    left: 15%;
+}
+
+.navbar-nav .nav-link.active::after {
+    display: none; /* keep the existing solid underline for the active page */
+}
+
+/* Button press + hover feedback */
+.btn {
+    transition: transform 0.12s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+}
+
+.btn:active {
+    transform: translateY(0) scale(0.98);
+}
+
+/* Flash message slide-down entrance */
+.alert {
+    animation: alert-slide-in 0.3s ease-out;
+}
+
+@keyframes alert-slide-in {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Theme toggle icon rotation on click */
+#themeToggle i {
+    display: inline-block;
+    transition: transform 0.35s ease;
+}
+
+#themeToggle.spin i {
+    transform: rotate(180deg);
+}
+
+/* Badge pop-in (e.g. "Available" badges on Tools page) */
+.badge {
+    animation: badge-pop 0.25s ease-out;
+}
+
+@keyframes badge-pop {
+    from { transform: scale(0.7); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+/* Table row fade-in for scan results/history */
+tbody tr {
+    animation: row-fade-in 0.3s ease-out both;
+}
+
+@keyframes row-fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Respect reduced-motion preference */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+    }
+}
+
+/* Stagger card entrance delay by grid position (covers up to 12 cards per row group) */
+.row > div:nth-child(1) .card { --delay: 0.02s; }
+.row > div:nth-child(2) .card { --delay: 0.06s; }
+.row > div:nth-child(3) .card { --delay: 0.10s; }
+.row > div:nth-child(4) .card { --delay: 0.14s; }
+.row > div:nth-child(5) .card { --delay: 0.18s; }
+.row > div:nth-child(6) .card { --delay: 0.22s; }
+.row > div:nth-child(7) .card { --delay: 0.26s; }
+.row > div:nth-child(8) .card { --delay: 0.30s; }
+.row > div:nth-child(9) .card { --delay: 0.34s; }
+.row > div:nth-child(10) .card { --delay: 0.38s; }
+.row > div:nth-child(11) .card { --delay: 0.42s; }
+.row > div:nth-child(12) .card { --delay: 0.46s; }

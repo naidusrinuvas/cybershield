@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}CyberShield - Packet Sniffer{% endblock %}
+{% block content %}
+<h1 class="fw-bold mb-4"><i class="bi bi-broadcast text-primary"></i> Packet Sniffer</h1>
+
+<div class="alert alert-warning">
+    <i class="bi bi-exclamation-triangle-fill"></i>
+    Requires administrator/root privileges and Npcap (Windows) or libpcap (Linux/Mac).
+    Only capture traffic on networks you own or have permission to monitor.
+    Run <code>python app.py</code> from an Administrator terminal for this tool to work.
+</div>
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body p-4">
+        <form method="POST" class="scan-form">
+            <div class="row g-3">
+                <div class="col-md-5">
+                    <label class="form-label">Packet count</label>
+                    <input type="number" class="form-control" name="count" value="20" min="1" max="200">
+                </div>
+                <div class="col-md-5">
+                    <label class="form-label">Timeout (seconds)</label>
+                    <input type="number" class="form-control" name="timeout" value="15" min="1" max="60">
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary w-100 scan-submit-btn"><span class="btn-label">Capture</span></button>
+                </div>
+            </div>
+        </form>
+        <div class="scan-progress-bar" id="scanProgress"><div class="bar"></div></div>
+
+        {% if capture_result and capture_result.packets %}
+        <hr>
+        <div class="row mb-3">
+            {% for proto, count in capture_result.protocol_counts.items() %}
+            <div class="col-auto">
+                <span class="badge bg-secondary">{{ proto }}: {{ count }}</span>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover bg-white">
+                <thead><tr><th>Source IP</th><th>Destination IP</th><th>Protocol</th><th>Size (bytes)</th></tr></thead>
+                <tbody>
+                {% for p in capture_result.packets %}
+                    <tr>
+                        <td>{{ p.src }}</td>
+                        <td>{{ p.dst }}</td>
+                        <td>{{ p.protocol }}</td>
+                        <td>{{ p.size }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% elif capture_result and not capture_result.error %}
+        <div class="alert alert-info mt-3">No packets captured &mdash; try generating some traffic (e.g. browse a site) while the capture runs, or increase the timeout.</div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

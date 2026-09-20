@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}CyberShield - SSL Certificate Checker{% endblock %}
+{% block content %}
+<h1 class="fw-bold mb-4"><i class="bi bi-patch-check-fill text-primary"></i> SSL Certificate Checker</h1>
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body p-4">
+        <form method="POST" class="row g-3 scan-form">
+            <div class="col-md-10">
+                <input type="text" class="form-control" name="hostname" value="{{ hostname }}"
+                       placeholder="example.com" required>
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary w-100 scan-submit-btn"><span class="btn-label">Check</span></button>
+            </div>
+        </form>
+        <div class="scan-progress-bar" id="scanProgress"><div class="bar"></div></div>
+
+        {% if result %}
+        <hr>
+        {% if result.error %}
+        <div class="alert alert-danger">{{ result.error }}</div>
+        {% else %}
+        <div class="alert {% if result.valid and result.days_remaining > 30 %}alert-success{% elif result.valid %}alert-warning{% else %}alert-danger{% endif %}">
+            {% if result.valid %}
+                Certificate is valid &mdash; {{ result.days_remaining }} day(s) remaining.
+            {% else %}
+                Certificate has expired.
+            {% endif %}
+        </div>
+        <p class="mb-1"><strong>Subject:</strong> {{ result.subject }}</p>
+        <p class="mb-1"><strong>Issuer:</strong> {{ result.issuer }}</p>
+        <p class="mb-1"><strong>Valid From:</strong> {{ result.start_date }}</p>
+        <p class="mb-1"><strong>Expires:</strong> {{ result.expiry_date }}</p>
+        {% endif %}
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
