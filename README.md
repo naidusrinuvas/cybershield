@@ -39,6 +39,7 @@ CyberShield/
 ├── static/
 ├── utils/
 └── README.md
+
 ## Screenshots
 
 ### Home Page
@@ -56,11 +57,11 @@ CyberShield/
 ### Website Security Checker
 ![Website Security Checker](./screenshots/website%20security%20checker.png)
 
-### SSL Certificate Checker
-![SSL Certificate Checker](./screenshots/SSL-certificate%20checker.png)
+### SSL-Certificate Checker
+![SSL Certificate Checker](./screenshots/SSL-certificate checker.png)
 
-### Scan History
-![Scan History](./screenshots/%20scan-history.png)
+### Scan-History
+![Scan History](./screenshots/scan-history.png)
 
 ### Reports
 ![Reports](./screenshots/reports.png)
